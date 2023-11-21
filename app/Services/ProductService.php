@@ -21,11 +21,13 @@ class ProductService
         $this->cacheManager = $cacheManager;
     }
 
+    //get all products
     public function getAllProducts()
     {
         return $this->productRepository->getAllWithCategories();
     }
 
+    // get all products paginated
     public function getAllProductsPaginated(array $data=[])
     {
         $page = $data['page'] ?? 1;
@@ -37,6 +39,7 @@ class ProductService
     }
 
 
+    //get a product by id
     public function getProductById($id)
     {
         //Generate a unique cache key based on the product ID
@@ -46,6 +49,7 @@ class ProductService
         });
     }
 
+    //create a product
     public function createProduct(array $data)
     {
         $product = $this->productRepository->create($data);
@@ -53,6 +57,7 @@ class ProductService
         return $product;
     }
 
+    //update a product
     public function updateProduct(Product $product, array $data)
     {
         $updatedProduct = $this->productRepository->update($product, $data);
@@ -62,6 +67,7 @@ class ProductService
         return $updatedProduct;
     }
 
+    //delete product
     public function deleteProduct($id)
     {
         $this->cacheManager->tags([$this->commonCacheTag])->flush();
@@ -69,7 +75,7 @@ class ProductService
 
     }
 
-
+    //generate cache key for redis
     public function generateCacheKey($data, $page)
     {
         $searchGlobal = $data['search_global'] ?? '';
@@ -78,18 +84,19 @@ class ProductService
         return "products_{$page}_{$searchGlobal}_{$sortColumn}_{$sortDirection}";
     }
 
-
+    //seed products
     public function seedProducts(array $data)
     {
         return $this->productRepository->insert( $data);
     }
 
-
+    //fetch product in batches
     public function getProductsBatch($batchSize, $offset)
     {
        return $this->productRepository->getProductsBatch($batchSize, $offset);
     }
 
+    //search for products
     public function searchProducts(array $data)
     {
         return $this->productRepository->searchProducts($data);

@@ -15,6 +15,7 @@ class ProductCategoryService
         $this->productCategoryRepository = $productCategoryRepository;
     }
 
+    //attach multiple product to categories
     public function attachProductsToCategories()
     {
         return $this->productCategoryRepository->attachProductsToCategories();

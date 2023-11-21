@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class FileManager
 {
-
+    //upload product image
     public function uploadFile($file)
     {
         $imageName = Str::random(20) . '.' . $file->getClientOriginalExtension();

@@ -23,6 +23,7 @@ class ElasticSearchService
         $this->fallBackStrategy = $fallBackStrategy;
     }
 
+    //initialize elastic search client
     private function initializeElasticsearchClient(): void
     {
         $elasticsearchConfig = config('database.connections.elasticsearch');
@@ -45,6 +46,7 @@ class ElasticSearchService
     }
 
 
+    //bulk index
     public function bulkIndex($models) : void
     {
         $params = ['body' => []];
@@ -69,6 +71,7 @@ class ElasticSearchService
     }
 
 
+    //indexing
     public function indexModel(Model $model): void
     {
         $index = $model->getTable();
@@ -88,6 +91,7 @@ class ElasticSearchService
         }
     }
 
+    //update index
     public function updateModel(Model $model): void
     {
         $index = $model->getTable();
@@ -103,6 +107,7 @@ class ElasticSearchService
         Log::info("Model with ID $documentId updated in $index");
     }
 
+    //delete index
     public function deleteModel($index, $documentId): void
     {
         $this->elasticsearchClient->delete([
@@ -113,7 +118,7 @@ class ElasticSearchService
     }
 
 
-
+    // search query
     public function searchProducts(array $data)
     {
         try {
@@ -171,6 +176,7 @@ class ElasticSearchService
     }
 
 
+    //serialize query response
     private function serializeElasticSearchResponse($items)
     {
         return array_map(function ($item) {
